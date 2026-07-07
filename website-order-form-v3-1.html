@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aayush Web Studio — Project Enquiry</title>
+<style>
+  :root{
+    --bg:#0a0a0a;
+    --bg-soft:#121212;
+    --bg-card:#161616;
+    --gold:#c9a24b;
+    --gold-bright:#e8c874;
+    --text:#f2ede1;
+    --text-dim:#8f8a7d;
+    --line:#242119;
+    --glow:0 0 0 rgba(0,0,0,0);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Georgia','Times New Roman',serif;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:0 0 60px;
+    position:relative;
+    transition:background 0.4s ease;
+  }
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    background:
+      radial-gradient(circle at 20% 10%, rgba(201,162,75,0.07), transparent 45%),
+      radial-gradient(circle at 80% 90%, rgba(201,162,75,0.06), transparent 50%);
+    pointer-events:none;
+    z-index:0;
+    transition:opacity 0.4s ease;
+  }
+
+  /* GLOW MODE */
+  body.glow-mode::before{
+    background:
+      radial-gradient(circle at 20% 10%, rgba(201,162,75,0.16), transparent 50%),
+      radial-gradient(circle at 80% 90%, rgba(201,162,75,0.14), transparent 55%);
+  }
+  body.glow-mode .logo-mark{
+    box-shadow:0 0 14px rgba(201,162,75,0.7), 0 0 30px rgba(201,162,75,0.35);
+  }
+  body.glow-mode h1 em{ text-shadow:0 0 18px rgba(232,200,116,0.55); }
+  body.glow-mode form{
+    box-shadow:0 0 0 1px rgba(201,162,75,0.15), 0 0 40px rgba(201,162,75,0.08);
+  }
+  body.glow-mode .divider{
+    box-shadow:0 0 8px rgba(201,162,75,0.6);
+  }
+  body.glow-mode .section-num{
+    box-shadow:0 0 8px rgba(201,162,75,0.5);
+  }
+  body.glow-mode button[type="submit"]{
+    box-shadow:0 0 20px rgba(201,162,75,0.45);
+  }
+  body.glow-mode button[type="submit"]:hover{
+    box-shadow:0 0 30px rgba(201,162,75,0.65);
+  }
+  body.glow-mode .contact-btns a{
+    box-shadow:0 0 10px rgba(201,162,75,0.25);
+  }
+  body.glow-mode .contact-btns a:hover{
+    box-shadow:0 0 18px rgba(201,162,75,0.5);
+  }
+  body.glow-mode .toggle-btn.active{
+    box-shadow:0 0 10px rgba(201,162,75,0.5);
+  }
+
+  /* Top bar */
+  .topbar{
+    width:100%; display:flex; align-items:center; justify-content:space-between;
+    gap:12px; padding:20px 20px; position:relative; z-index:1;
+    border-bottom:1px solid var(--line); max-width:900px;
+  }
+  .brand-group{ display:flex; align-items:center; gap:12px; }
+  .logo-mark{
+    width:38px; height:38px; border-radius:50%; border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:Georgia,serif; font-style:italic; font-size:15px; color:var(--gold-bright);
+    flex-shrink:0; transition:box-shadow 0.4s ease;
+  }
+  .logo-text{
+    font-family:Arial,Helvetica,sans-serif; font-size:13px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--text);
+  }
+  .logo-text span{ color:var(--gold); }
+
+  .toggle-group{ display:flex; gap:8px; }
+  .toggle-btn{
+    font-family:Arial,Helvetica,sans-serif; font-size:11px; letter-spacing:1.5px;
+    text-transform:uppercase; background:transparent; color:var(--text-dim);
+    border:1px solid var(--line); padding:8px 13px; border-radius:20px;
+    cursor:pointer; transition:all 0.25s ease; white-space:nowrap;
+  }
+  .toggle-btn:hover{ border-color:rgba(201,162,75,0.5); color:var(--text); }
+  .toggle-btn.active{
+    border-color:var(--gold); color:var(--gold-bright); background:rgba(201,162,75,0.08);
+  }
+
+  .wrap{ width:100%; max-width:560px; position:relative; z-index:1; padding:0 20px; margin-top:40px;}
+
+  .eyebrow{
+    text-align:center; font-family:Arial,Helvetica,sans-serif; font-size:11px;
+    letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:14px;
+  }
+  h1{
+    text-align:center; font-size:clamp(26px,6vw,36px); font-weight:400;
+    letter-spacing:0.5px; line-height:1.25; margin-bottom:12px;
+  }
+  h1 em{ font-style:italic; color:var(--gold-bright); transition:text-shadow 0.4s ease; }
+  .sub{
+    text-align:center; color:var(--text-dim); font-size:14.5px; line-height:1.65;
+    max-width:420px; margin:0 auto 20px; font-family:Arial,Helvetica,sans-serif;
+  }
+  .trust-row{
+    display:flex; justify-content:center; gap:22px; flex-wrap:wrap;
+    font-family:Arial,Helvetica,sans-serif; font-size:11px; letter-spacing:1px;
+    color:var(--text-dim); margin-bottom:30px; text-transform:uppercase;
+  }
+  .trust-row span{ color:var(--gold-bright); }
+  .divider{
+    width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    margin:0 auto 34px; transition:box-shadow 0.4s ease;
+  }
+
+  form{
+    background:var(--bg-soft); border:1px solid var(--line); border-radius:2px;
+    padding:34px 26px; position:relative; transition:box-shadow 0.4s ease;
+  }
+  form::before{
+    content:''; position:absolute; top:10px;left:10px;right:10px;bottom:10px;
+    border:1px solid rgba(201,162,75,0.15); pointer-events:none;
+  }
+  .section-title{
+    font-family:Arial,Helvetica,sans-serif; font-size:10.5px; letter-spacing:3px;
+    text-transform:uppercase; color:var(--gold); margin:28px 0 16px;
+    padding-bottom:8px; border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:8px;
+  }
+  .section-title:first-child{ margin-top:0; }
+  .section-num{
+    width:18px; height:18px; border:1px solid var(--gold); border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:9px; color:var(--gold-bright); flex-shrink:0; transition:box-shadow 0.4s ease;
+  }
+  .field{ margin-bottom:18px; }
+  .field-row{ display:flex; gap:14px; }
+  .field-row .field{ flex:1; }
+  label{
+    display:block; font-family:Arial,Helvetica,sans-serif; font-size:10.5px;
+    letter-spacing:1.5px; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px;
+  }
+  input, textarea, select{
+    width:100%; background:transparent; border:none; border-bottom:1px solid var(--line);
+    color:var(--text); font-family:Arial,Helvetica,sans-serif; font-size:14.5px;
+    padding:8px 2px; transition:border-color 0.25s ease;
+  }
+  select{ background:var(--bg-soft); }
+  select option{ background:var(--bg-soft); color:var(--text); }
+  input:focus, textarea:focus, select:focus{ outline:none; border-bottom-color:var(--gold); }
+  textarea{ resize:none; min-height:65px; font-family:Arial,Helvetica,sans-serif; }
+  ::placeholder{ color:#4a4636; }
+
+  .checks{ display:flex; flex-wrap:wrap; gap:9px 14px; font-family:Arial,Helvetica,sans-serif; }
+  .checks label, .radio-row label{
+    display:flex; align-items:center; gap:7px; font-size:13px; letter-spacing:0;
+    text-transform:none; color:var(--text); margin-bottom:0; cursor:pointer;
+  }
+  .checks input[type="checkbox"]{ width:15px; height:15px; accent-color:var(--gold); flex-shrink:0; }
+  .radio-row{ display:flex; flex-wrap:wrap; gap:8px 16px; font-family:Arial,Helvetica,sans-serif; }
+  .radio-row input[type="radio"]{ accent-color:var(--gold); }
+
+
+  button[type="submit"]{
+    width:100%; margin-top:26px; background:linear-gradient(180deg,var(--gold-bright),var(--gold));
+    color:#0a0a0a; border:none; padding:16px; font-family:Arial,Helvetica,sans-serif;
+    font-size:12.5px; letter-spacing:2.5px; text-transform:uppercase; font-weight:700;
+    cursor:pointer; border-radius:1px; transition:transform 0.2s ease, box-shadow 0.4s ease;
+  }
+  button[type="submit"]:hover{ transform:translateY(-1px); }
+  button[type="submit"]:disabled{ opacity:0.6; cursor:wait; }
+  .status{
+    text-align:center; font-family:Arial,Helvetica,sans-serif; font-size:13px;
+    margin-top:16px; color:var(--gold-bright); min-height:18px;
+  }
+  .privacy-note{
+    text-align:center; font-family:Arial,Helvetica,sans-serif; font-size:11px;
+    color:#5c5748; margin-top:14px; line-height:1.5;
+  }
+
+  .contact-card{
+    margin-top:36px; text-align:center; background:var(--bg-card);
+    border:1px solid var(--line); padding:30px 22px; border-radius:2px;
+  }
+  .contact-card h3{ font-size:19px; font-weight:400; margin-bottom:10px; }
+  .contact-card p{
+    font-family:Arial,Helvetica,sans-serif; font-size:13px; color:var(--text-dim);
+    margin-bottom:18px; line-height:1.6;
+  }
+  .contact-btns{ display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .contact-btns a{
+    font-family:Arial,Helvetica,sans-serif; font-size:12px; letter-spacing:1.5px;
+    text-transform:uppercase; text-decoration:none; color:var(--gold-bright);
+    border:1px solid var(--gold); padding:11px 22px; border-radius:1px;
+    transition:background 0.2s ease, color 0.2s ease, box-shadow 0.4s ease;
+  }
+  .contact-btns a:hover{ background:var(--gold); color:#0a0a0a; }
+
+  footer{
+    text-align:center; margin-top:30px; font-family:Arial,Helvetica,sans-serif;
+    font-size:11px; color:var(--text-dim); letter-spacing:1px;
+  }
+  @media (max-width:480px){
+    .field-row{ flex-direction:column; gap:0; }
+    .topbar{ flex-wrap:wrap; justify-content:center; text-align:center; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition:none !important; } }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand-group">
+    <div class="logo-mark">AY</div>
+    <div class="logo-text">Aayush <span>Web Studio</span></div>
+  </div>
+  <div class="toggle-group">
+    <button type="button" class="toggle-btn active" id="langToggle" data-lang="en">EN / हिं</button>
+    <button type="button" class="toggle-btn" id="glowToggle">✨ Glow</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="eyebrow" data-i18n="eyebrow">Project Enquiry</div>
+  <h1><span data-i18n="title_main">Let's plan the website your</span> <em data-i18n="title_em">business deserves</em></h1>
+  <p class="sub" data-i18n="sub">Answer as fully as you can — every detail here helps me scope your project accurately and quote you fairly, with no back-and-forth needed.</p>
+  <div class="trust-row">
+    <div><span>50+</span> <span data-i18n="trust1">Projects delivered</span></div>
+    <div><span>24 hr</span> <span data-i18n="trust2">Response time</span></div>
+    <div><span>1:1</span> <span data-i18n="trust3">Direct with the developer</span></div>
+  </div>
+  <div class="divider"></div>
+
+  <form id="enquiryForm">
+
+    <div class="section-title"><span class="section-num">1</span> <span data-i18n="sec1">Contact Details</span></div>
+    <div class="field-row">
+      <div class="field">
+        <label data-i18n="lbl_name">Full Name</label>
+        <input type="text" id="name" name="name" data-i18n-ph="ph_name" placeholder="e.g. Rohan Sharma" required>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl_phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" data-i18n-ph="ph_phone" placeholder="e.g. 9876543210" required>
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label data-i18n="lbl_email">Email</label>
+        <input type="email" id="email" name="email" data-i18n-ph="ph_email" placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label data-i18n="lbl_city">City</label>
+        <input type="text" id="city" name="city" data-i18n-ph="ph_city" placeholder="e.g. Delhi">
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_contact_pref">Preferred contact method</label>
+      <div class="radio-row">
+        <label><input type="radio" name="contact_pref" value="Call" required> <span data-i18n="opt_call">Call</span></label>
+        <label><input type="radio" name="contact_pref" value="WhatsApp"> <span data-i18n="opt_whatsapp">WhatsApp</span></label>
+        <label><input type="radio" name="contact_pref" value="Email"> <span data-i18n="opt_email_pref">Email</span></label>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="section-num">2</span> <span data-i18n="sec2">Business / Brand</span></div>
+    <div class="field">
+      <label data-i18n="lbl_business">Business or Brand Name</label>
+      <input type="text" id="business" name="business" data-i18n-ph="ph_business" placeholder="e.g. Tino Energy Drinks">
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_industry">Industry / What do you do</label>
+      <input type="text" id="industry" name="industry" data-i18n-ph="ph_industry" placeholder="e.g. D2C beverage brand, clothing store, coaching institute">
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_audience">Who is your target audience?</label>
+      <input type="text" id="audience" name="audience" data-i18n-ph="ph_audience" placeholder="e.g. college students, working professionals, local customers">
+    </div>
+
+    <div class="section-title"><span class="section-num">3</span> <span data-i18n="sec3">Website Requirements</span></div>
+    <div class="field">
+      <label data-i18n="lbl_type">What kind of website is this?</label>
+      <select id="type" name="type" required>
+        <option value="" data-i18n="opt_select">Select one</option>
+        <option value="Business / Company website" data-i18n="opt_type1">Business / Company website</option>
+        <option value="Online store (e-commerce)" data-i18n="opt_type2">Online store (e-commerce)</option>
+        <option value="Portfolio" data-i18n="opt_type3">Portfolio</option>
+        <option value="Landing page for a product" data-i18n="opt_type4">Landing page for a product</option>
+        <option value="Booking / appointment site" data-i18n="opt_type5">Booking / appointment site</option>
+        <option value="Web app / custom tool" data-i18n="opt_type6">Web app / custom tool</option>
+        <option value="Other" data-i18n="opt_type7">Other</option>
+      </select>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label data-i18n="lbl_existing">Existing website?</label>
+        <div class="radio-row">
+          <label><input type="radio" name="existing" value="Redesign existing" required> <span data-i18n="opt_redesign">Redesign</span></label>
+          <label><input type="radio" name="existing" value="Starting fresh"> <span data-i18n="opt_fresh">Fresh build</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl_pages">Roughly how many pages?</label>
+        <select id="pages" name="pages">
+          <option value="" data-i18n="opt_select">Select one</option>
+          <option value="1 (single landing page)" data-i18n="opt_pages1">1 (single landing page)</option>
+          <option value="2–4 pages" data-i18n="opt_pages2">2–4 pages</option>
+          <option value="5–10 pages" data-i18n="opt_pages3">5–10 pages</option>
+          <option value="10+ pages" data-i18n="opt_pages4">10+ pages</option>
+          <option value="Not sure" data-i18n="opt_notsure">Not sure</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_features">Features you need (select all that apply)</label>
+      <div class="checks">
+        <label><input type="checkbox" name="features" value="Contact/Enquiry form"> <span data-i18n="feat1">Contact form</span></label>
+        <label><input type="checkbox" name="features" value="Online payments"> <span data-i18n="feat2">Online payments</span></label>
+        <label><input type="checkbox" name="features" value="Product catalog/shop"> <span data-i18n="feat3">Product catalog</span></label>
+        <label><input type="checkbox" name="features" value="Admin panel/dashboard"> <span data-i18n="feat4">Admin panel</span></label>
+        <label><input type="checkbox" name="features" value="Login/user accounts"> <span data-i18n="feat5">User accounts</span></label>
+        <label><input type="checkbox" name="features" value="Blog/news section"> <span data-i18n="feat6">Blog section</span></label>
+        <label><input type="checkbox" name="features" value="Booking system"> <span data-i18n="feat7">Booking system</span></label>
+        <label><input type="checkbox" name="features" value="Live chat"> <span data-i18n="feat8">Live chat</span></label>
+        <label><input type="checkbox" name="features" value="Multi-language"> <span data-i18n="feat9">Multi-language</span></label>
+        <label><input type="checkbox" name="features" value="Animations/interactive elements"> <span data-i18n="feat10">Animations</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_reference">Websites or brands whose look you like</label>
+      <input type="text" id="reference" name="reference" data-i18n-ph="ph_reference" placeholder="Paste a link or name a brand">
+    </div>
+
+    <div class="section-title"><span class="section-num">4</span> <span data-i18n="sec4">Design Preferences</span></div>
+    <div class="field">
+      <label data-i18n="lbl_style">Preferred style / mood</label>
+      <select id="style" name="style">
+        <option value="" data-i18n="opt_select">Select one</option>
+        <option value="Minimal & clean" data-i18n="style1">Minimal & clean</option>
+        <option value="Bold & modern" data-i18n="style2">Bold & modern</option>
+        <option value="Luxury / premium" data-i18n="style3">Luxury / premium</option>
+        <option value="Playful & colorful" data-i18n="style4">Playful & colorful</option>
+        <option value="Corporate & professional" data-i18n="style5">Corporate & professional</option>
+        <option value="Not sure — open to suggestions" data-i18n="style6">Not sure — open to suggestions</option>
+      </select>
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_colors">Any brand colors to use?</label>
+      <input type="text" id="colors" name="colors" data-i18n-ph="ph_colors" placeholder="e.g. black & gold, or your logo's colors">
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_logo">Do you need a logo designed too?</label>
+      <div class="radio-row">
+        <label><input type="radio" name="logo_needed" value="Yes, need a logo"> <span data-i18n="opt_yes">Yes</span></label>
+        <label><input type="radio" name="logo_needed" value="No, have one already"> <span data-i18n="opt_no_logo">No, I have one</span></label>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="section-num">5</span> <span data-i18n="sec5">Content & Assets</span></div>
+    <div class="field">
+      <label data-i18n="lbl_content">Is your content (text, photos, product images) ready?</label>
+      <div class="radio-row">
+        <label><input type="radio" name="content_status" value="Fully ready"> <span data-i18n="opt_fully">Fully ready</span></label>
+        <label><input type="radio" name="content_status" value="Partially ready"> <span data-i18n="opt_partial">Partially ready</span></label>
+        <label><input type="radio" name="content_status" value="Need help creating it"> <span data-i18n="opt_needhelp">Need help creating it</span></label>
+      </div>
+    </div>
+    <div class="field">
+      <label data-i18n="lbl_domain">Do you already own a domain & hosting?</label>
+      <div class="radio-row">
+        <label><input type="radio" name="domain_status" value="Yes, have both"> <span data-i18n="opt_both">Yes, have both</span></label>
+        <label><input type="radio" name="domain_status" value="Have domain only"> <span data-i18n="opt_domainonly">Domain only</span></label>
+        <label><input type="radio" name="domain_status" value="Need both set up"> <span data-i18n="opt_needboth">Need both set up</span></label>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="section-num">6</span> <span data-i18n="sec6">Add-on Services</span></div>
+    <div class="field">
+      <div class="checks">
+        <label><input type="checkbox" name="addons" value="SEO setup"> <span data-i18n="addon1">SEO setup</span></label>
+        <label><input type="checkbox" name="addons" value="Social media page setup"> <span data-i18n="addon2">Social media setup</span></label>
+        <label><input type="checkbox" name="addons" value="Ongoing maintenance"> <span data-i18n="addon3">Ongoing maintenance</span></label>
+        <label><input type="checkbox" name="addons" value="Content writing"> <span data-i18n="addon4">Content writing</span></label>
+        <label><input type="checkbox" name="addons" value="Analytics setup"> <span data-i18n="addon5">Analytics setup</span></label>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="section-num">7</span> <span data-i18n="sec8">Budget & Timeline</span></div>
+    <div class="field-row">
+      <div class="field">
+        <label data-i18n="lbl_budget">Budget range</label>
+        <select id="budget" name="budget" required>
+          <option value="" data-i18n="opt_select">Select one</option>
+          <option value="Under ₹5,000" data-i18n="budget1">Under ₹5,000</option>
+          <option value="₹5,000 – ₹15,000" data-i18n="budget2">₹5,000 – ₹15,000</option>
+          <option value="₹15,000 – ₹40,000" data-i18n="budget3">₹15,000 – ₹40,000</option>
+          <option value="₹40,000+" data-i18n="budget4">₹40,000+</option>
+          <option value="Not sure yet" data-i18n="opt_notsureyet">Not sure yet</option>
+        </select>
+      </div>
+      <div class="field">
+        <label data-i18n="lbl_timeline">Timeline needed</label>
+        <select id="timeline" name="timeline" required>
+          <option value="" data-i18n="opt_select">Select one</option>
+          <option value="Urgent — within a week" data-i18n="time1">Urgent — within a week</option>
+          <option value="Within a month" data-i18n="time2">Within a month</option>
+          <option value="No fixed deadline" data-i18n="time3">No fixed deadline</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section-title"><span class="section-num">8</span> <span data-i18n="sec9">Project Description</span></div>
+    <div class="field">
+      <label data-i18n="lbl_message">Tell me about the project in your own words</label>
+      <textarea id="message" name="message" data-i18n-ph="ph_message" placeholder="What's the goal, what problem should this website solve, anything specific you have in mind..." required></textarea>
+    </div>
+
+    <button type="submit" id="submitBtn" data-i18n="btn_submit">Submit Requirements</button>
+    <div class="status" id="status"></div>
+    <p class="privacy-note" data-i18n="privacy">Your details are sent directly to me and are never shared with anyone else.</p>
+  </form>
+
+  <div class="contact-card">
+    <h3 data-i18n="contact_heading">Prefer to talk it through directly?</h3>
+    <p data-i18n="contact_sub">Call or message me and I'll understand your requirements on the spot — no form needed.</p>
+    <div class="contact-btns">
+      <a href="tel:+917494064496" data-i18n="btn_call">Call Now</a>
+      <a href="https://wa.me/917494064496" target="_blank" rel="noopener" data-i18n="btn_whatsapp">WhatsApp</a>
+    </div>
+  </div>
+
+  <footer data-i18n="footer_text">Aayush Yadav &middot; Aayush Web Studio &middot; Replies within 24 hours</footer>
+</div>
+
+<script>
+  const WHATSAPP_NUMBER = "917494064496";
+  const form = document.getElementById('enquiryForm');
+  const statusEl = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+
+  /* ---------- GLOW TOGGLE ---------- */
+  const glowToggle = document.getElementById('glowToggle');
+  glowToggle.addEventListener('click', () => {
+    document.body.classList.toggle('glow-mode');
+    glowToggle.classList.toggle('active');
+  });
+
+  /* ---------- LANGUAGE TOGGLE ---------- */
+  const langToggle = document.getElementById('langToggle');
+  let currentLang = 'en';
+
+  const T = {
+    eyebrow:{en:"Project Enquiry",hi:"प्रोजेक्ट पूछताछ"},
+    title_main:{en:"Let's plan the website your",hi:"चलिए वो वेबसाइट प्लान करते हैं जिसके"},
+    title_em:{en:"business deserves",hi:"लायक आपका बिज़नेस है"},
+    sub:{en:"Answer as fully as you can — every detail here helps me scope your project accurately and quote you fairly, with no back-and-forth needed.",
+         hi:"जितना ज़्यादा detail se bataoge utna accurate quote aur planning ho payegi — baar baar poochne ki zaroorat nahi padegi."},
+    trust1:{en:"Projects delivered",hi:"प्रोजेक्ट्स पूरे किए"},
+    trust2:{en:"Response time",hi:"जवाब का समय"},
+    trust3:{en:"Direct with the developer",hi:"डेवलपर से सीधा संपर्क"},
+    sec1:{en:"Contact Details",hi:"संपर्क विवरण"},
+    sec2:{en:"Business / Brand",hi:"बिज़नेस / ब्रांड"},
+    sec3:{en:"Website Requirements",hi:"वेबसाइट की ज़रूरतें"},
+    sec4:{en:"Design Preferences",hi:"डिज़ाइन पसंद"},
+    sec5:{en:"Content & Assets",hi:"कंटेंट और फाइलें"},
+    sec6:{en:"Add-on Services",hi:"अतिरिक्त सेवाएं"},
+    sec8:{en:"Budget & Timeline",hi:"बजट और समय"},
+    sec9:{en:"Project Description",hi:"प्रोजेक्ट विवरण"},
+    lbl_name:{en:"Full Name",hi:"पूरा नाम"},
+    lbl_phone:{en:"Phone Number",hi:"फोन नंबर"},
+    lbl_email:{en:"Email",hi:"ईमेल"},
+    lbl_city:{en:"City",hi:"शहर"},
+    lbl_contact_pref:{en:"Preferred contact method",hi:"किस तरह संपर्क करें"},
+    lbl_business:{en:"Business or Brand Name",hi:"बिज़नेस / ब्रांड का नाम"},
+    lbl_industry:{en:"Industry / What do you do",hi:"आप क्या काम करते हैं"},
+    lbl_audience:{en:"Who is your target audience?",hi:"आपके ग्राहक कौन हैं?"},
+    lbl_type:{en:"What kind of website is this?",hi:"किस तरह की वेबसाइट चाहिए?"},
+    lbl_existing:{en:"Existing website?",hi:"पहले से वेबसाइट है?"},
+    lbl_pages:{en:"Roughly how many pages?",hi:"लगभग कितने पेज चाहिए?"},
+    lbl_features:{en:"Features you need (select all that apply)",hi:"कौन-कौन से features चाहिए (जितने लागू हों चुनें)"},
+    lbl_reference:{en:"Websites or brands whose look you like",hi:"कोई वेबसाइट/ब्रांड जिसका लुक पसंद हो"},
+    lbl_style:{en:"Preferred style / mood",hi:"पसंदीदा स्टाइल"},
+    lbl_colors:{en:"Any brand colors to use?",hi:"कोई खास ब्रांड कलर?"},
+    lbl_logo:{en:"Do you need a logo designed too?",hi:"क्या लोगो भी डिज़ाइन करवाना है?"},
+    lbl_content:{en:"Is your content (text, photos, product images) ready?",hi:"क्या आपका कंटेंट (टेक्स्ट, फोटो, प्रोडक्ट इमेज) तैयार है?"},
+    lbl_domain:{en:"Do you already own a domain & hosting?",hi:"क्या आपके पास डोमेन और होस्टिंग पहले से है?"},
+    lbl_budget:{en:"Budget range",hi:"बजट रेंज"},
+    lbl_timeline:{en:"Timeline needed",hi:"कितने समय में चाहिए"},
+    lbl_message:{en:"Tell me about the project in your own words",hi:"अपने शब्दों में प्रोजेक्ट के बारे में बताएं"},
+    ph_name:{en:"e.g. Rohan Sharma",hi:"जैसे: रोहन शर्मा"},
+    ph_phone:{en:"e.g. 9876543210",hi:"जैसे: 9876543210"},
+    ph_email:{en:"you@example.com",hi:"you@example.com"},
+    ph_city:{en:"e.g. Delhi",hi:"जैसे: दिल्ली"},
+    ph_business:{en:"e.g. Tino Energy Drinks",hi:"जैसे: टीनो एनर्जी ड्रिंक्स"},
+    ph_industry:{en:"e.g. D2C beverage brand, clothing store, coaching institute",hi:"जैसे: ड्रिंक ब्रांड, कपड़ों की दुकान, कोचिंग सेंटर"},
+    ph_audience:{en:"e.g. college students, working professionals, local customers",hi:"जैसे: कॉलेज स्टूडेंट्स, नौकरीपेशा लोग, लोकल ग्राहक"},
+    ph_reference:{en:"Paste a link or name a brand",hi:"लिंक डालें या किसी ब्रांड का नाम लिखें"},
+    ph_colors:{en:"e.g. black & gold, or your logo's colors",hi:"जैसे: काला-सुनहरा, या आपके लोगो के रंग"},
+    ph_message:{en:"What's the goal, what problem should this website solve, anything specific you have in mind...",hi:"वेबसाइट का मकसद क्या है, ये किस समस्या का हल है, कोई खास बात दिमाग में हो तो बताएं..."},
+    opt_select:{en:"Select one",hi:"एक चुनें"},
+    opt_call:{en:"Call",hi:"कॉल"},
+    opt_whatsapp:{en:"WhatsApp",hi:"व्हाट्सएप"},
+    opt_email_pref:{en:"Email",hi:"ईमेल"},
+    opt_type1:{en:"Business / Company website",hi:"बिज़नेस / कंपनी वेबसाइट"},
+    opt_type2:{en:"Online store (e-commerce)",hi:"ऑनलाइन स्टोर (ई-कॉमर्स)"},
+    opt_type3:{en:"Portfolio",hi:"पोर्टफोलियो"},
+    opt_type4:{en:"Landing page for a product",hi:"प्रोडक्ट के लिए लैंडिंग पेज"},
+    opt_type5:{en:"Booking / appointment site",hi:"बुकिंग / अपॉइंटमेंट साइट"},
+    opt_type6:{en:"Web app / custom tool",hi:"वेब ऐप / कस्टम टूल"},
+    opt_type7:{en:"Other",hi:"अन्य"},
+    opt_redesign:{en:"Redesign",hi:"रीडिज़ाइन करें"},
+    opt_fresh:{en:"Fresh build",hi:"नई बनाएं"},
+    opt_pages1:{en:"1 (single landing page)",hi:"1 (सिंगल लैंडिंग पेज)"},
+    opt_pages2:{en:"2–4 pages",hi:"2–4 पेज"},
+    opt_pages3:{en:"5–10 pages",hi:"5–10 पेज"},
+    opt_pages4:{en:"10+ pages",hi:"10+ पेज"},
+    opt_notsure:{en:"Not sure",hi:"पता नहीं"},
+    feat1:{en:"Contact form",hi:"कॉन्टैक्ट फॉर्म"},
+    feat2:{en:"Online payments",hi:"ऑनलाइन पेमेंट"},
+    feat3:{en:"Product catalog",hi:"प्रोडक्ट कैटलॉग"},
+    feat4:{en:"Admin panel",hi:"एडमिन पैनल"},
+    feat5:{en:"User accounts",hi:"यूज़र अकाउंट्स"},
+    feat6:{en:"Blog section",hi:"ब्लॉग सेक्शन"},
+    feat7:{en:"Booking system",hi:"बुकिंग सिस्टम"},
+    feat8:{en:"Live chat",hi:"लाइव चैट"},
+    feat9:{en:"Multi-language",hi:"मल्टी-लैंग्वेज"},
+    feat10:{en:"Animations",hi:"एनिमेशन"},
+    style1:{en:"Minimal & clean",hi:"मिनिमल और क्लीन"},
+    style2:{en:"Bold & modern",hi:"बोल्ड और मॉडर्न"},
+    style3:{en:"Luxury / premium",hi:"लक्ज़री / प्रीमियम"},
+    style4:{en:"Playful & colorful",hi:"मस्ती भरा और रंगीन"},
+    style5:{en:"Corporate & professional",hi:"कॉर्पोरेट और प्रोफेशनल"},
+    style6:{en:"Not sure — open to suggestions",hi:"पता नहीं — सुझाव दीजिए"},
+    opt_yes:{en:"Yes",hi:"हां"},
+    opt_no_logo:{en:"No, I have one",hi:"नहीं, मेरे पास है"},
+    opt_fully:{en:"Fully ready",hi:"पूरी तरह तैयार"},
+    opt_partial:{en:"Partially ready",hi:"आधा तैयार"},
+    opt_needhelp:{en:"Need help creating it",hi:"बनाने में मदद चाहिए"},
+    opt_both:{en:"Yes, have both",hi:"हां, दोनों हैं"},
+    opt_domainonly:{en:"Domain only",hi:"सिर्फ डोमेन है"},
+    opt_needboth:{en:"Need both set up",hi:"दोनों चाहिए"},
+    addon1:{en:"SEO setup",hi:"SEO सेटअप"},
+    addon2:{en:"Social media setup",hi:"सोशल मीडिया सेटअप"},
+    addon3:{en:"Ongoing maintenance",hi:"लगातार मेंटेनेंस"},
+    addon4:{en:"Content writing",hi:"कंटेंट राइटिंग"},
+    addon5:{en:"Analytics setup",hi:"एनालिटिक्स सेटअप"},
+    budget1:{en:"Under ₹5,000",hi:"₹5,000 से कम"},
+    budget2:{en:"₹5,000 – ₹15,000",hi:"₹5,000 – ₹15,000"},
+    budget3:{en:"₹15,000 – ₹40,000",hi:"₹15,000 – ₹40,000"},
+    budget4:{en:"₹40,000+",hi:"₹40,000+"},
+    opt_notsureyet:{en:"Not sure yet",hi:"अभी तय नहीं"},
+    time1:{en:"Urgent — within a week",hi:"अर्जेंट — एक हफ्ते में"},
+    time2:{en:"Within a month",hi:"एक महीने में"},
+    time3:{en:"No fixed deadline",hi:"कोई फिक्स डेडलाइन नहीं"},
+    btn_submit:{en:"Submit Requirements",hi:"जानकारी भेजें"},
+    privacy:{en:"Your details are sent directly to me and are never shared with anyone else.",hi:"आपकी जानकारी सीधे मुझे भेजी जाती है और किसी और के साथ शेयर नहीं की जाती।"},
+    contact_heading:{en:"Prefer to talk it through directly?",hi:"सीधे बात करना चाहते हैं?"},
+    contact_sub:{en:"Call or message me and I'll understand your requirements on the spot — no form needed.",hi:"कॉल करें या मैसेज करें, मैं तुरंत आपकी ज़रूरत समझ लूंगा — फॉर्म भरने की ज़रूरत नहीं।"},
+    btn_call:{en:"Call Now",hi:"कॉल करें"},
+    btn_whatsapp:{en:"WhatsApp",hi:"व्हाट्सएप करें"},
+    footer_text:{en:"Aayush Yadav &middot; Aayush Web Studio &middot; Replies within 24 hours",hi:"आयुष यादव &middot; Aayush Web Studio &middot; 24 घंटे में जवाब"}
+  };
+
+  function applyLang(lang){
+    currentLang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if(T[key]) el.innerHTML = T[key][lang];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+      const key = el.getAttribute('data-i18n-ph');
+      if(T[key]) el.setAttribute('placeholder', T[key][lang]);
+    });
+    langToggle.textContent = lang === 'en' ? 'EN / हिं' : 'हिं / EN';
+    document.documentElement.lang = lang;
+  }
+
+  langToggle.addEventListener('click', () => {
+    applyLang(currentLang === 'en' ? 'hi' : 'en');
+  });
+
+  /* ---------- FORM SUBMIT ---------- */
+  function checkedValues(name){
+    return Array.from(form.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value).join(', ');
+  }
+  function radioValue(name, fallback){
+    return form.querySelector(`input[name="${name}"]:checked`)?.value || fallback;
+  }
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+
+    const name = document.getElementById('name').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const contactPref = radioValue('contact_pref', 'Not specified');
+
+    const business = document.getElementById('business').value.trim();
+    const industry = document.getElementById('industry').value.trim();
+    const audience = document.getElementById('audience').value.trim();
+
+    const type = document.getElementById('type').value;
+    const existing = radioValue('existing', 'Not specified');
+    const pages = document.getElementById('pages').value || 'Not specified';
+    const features = checkedValues('features') || 'None selected';
+    const reference = document.getElementById('reference').value.trim() || 'None given';
+
+    const style = document.getElementById('style').value || 'Not specified';
+    const colors = document.getElementById('colors').value.trim() || 'Not specified';
+    const logoNeeded = radioValue('logo_needed', 'Not specified');
+
+    const contentStatus = radioValue('content_status', 'Not specified');
+    const domainStatus = radioValue('domain_status', 'Not specified');
+
+    const addons = checkedValues('addons') || 'None selected';
+
+    const budget = document.getElementById('budget').value;
+    const timeline = document.getElementById('timeline').value;
+    const message = document.getElementById('message').value.trim();
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = currentLang === 'en' ? 'Sending...' : 'भेजा जा रहा है...';
+    statusEl.textContent = '';
+
+    const summary =
+`NEW WEBSITE PROJECT ENQUIRY
+============================
+Name: ${name}
+Phone: ${phone}
+Email: ${email || 'Not provided'}
+City: ${city || 'Not provided'}
+Preferred contact: ${contactPref}
+
+Business: ${business || 'Not provided'}
+Industry: ${industry || 'Not provided'}
+Target audience: ${audience || 'Not provided'}
+
+Website type: ${type}
+Existing site: ${existing}
+Pages needed: ${pages}
+Features: ${features}
+Reference sites: ${reference}
+
+Style preference: ${style}
+Brand colors: ${colors}
+Logo needed: ${logoNeeded}
+
+Content ready: ${contentStatus}
+Domain/hosting: ${domainStatus}
+Add-on services: ${addons}
+
+Budget: ${budget}
+Timeline: ${timeline}
+
+Project description:
+${message}`;
+
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('phone', phone);
+      formData.append('email', email || 'Not provided');
+      formData.append('city', city || 'Not provided');
+      formData.append('preferred_contact', contactPref);
+      formData.append('business', business || 'Not provided');
+      formData.append('industry', industry || 'Not provided');
+      formData.append('target_audience', audience || 'Not provided');
+      formData.append('website_type', type);
+      formData.append('existing_website', existing);
+      formData.append('pages_needed', pages);
+      formData.append('features', features);
+      formData.append('reference_sites', reference);
+      formData.append('style_preference', style);
+      formData.append('brand_colors', colors);
+      formData.append('logo_needed', logoNeeded);
+      formData.append('content_status', contentStatus);
+      formData.append('domain_status', domainStatus);
+      formData.append('addons', addons);
+      formData.append('budget', budget);
+      formData.append('timeline', timeline);
+      formData.append('project_description', message);
+      formData.append('_subject', 'New Website Enquiry from ' + name);
+      formData.append('_captcha', 'false');
+      formData.append('_template', 'table');
+
+      await fetch('https://formsubmit.co/ajax/sumitkumarbihariara@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      });
+    } catch (err) {
+      console.error('Email send failed:', err);
+    }
+
+    const waLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(summary)}`;
+
+    statusEl.textContent = currentLang === 'en' ? 'Sent! Opening WhatsApp...' : 'भेज दिया! व्हाट्सएप खुल रहा है...';
+    submitBtn.textContent = currentLang === 'en' ? 'Sent ✓' : 'भेज दिया ✓';
+
+    setTimeout(() => {
+      window.open(waLink, '_blank');
+      form.reset();
+      submitBtn.disabled = false;
+      submitBtn.textContent = currentLang === 'en' ? 'Submit Requirements' : 'जानकारी भेजें';
+      statusEl.textContent = currentLang === 'en'
+        ? "Thanks — I'll review this and get back to you soon."
+        : "धन्यवाद — मैं इसे देखकर जल्द ही आपसे संपर्क करूंगा।";
+    }, 600);
+  });
+</script>
+
+</body>
+</html>
